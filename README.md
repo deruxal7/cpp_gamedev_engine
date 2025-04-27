@@ -7,8 +7,14 @@
 
 Это будет 3D движок. Платформа PC. Поддержка скриптов.
 Зависимости:
-- DirectX - для графики;
+- OpenGL - для графики;
 - SDL - создание окон;
 - glm - математика;
 - stb_image - файлы;
 - Звук (позже) - Скорее всего SDL_mixer.
+
+### Requirements
+~~~bash
+sudo apt update
+sudo apt install libsdl2-dev libsdl2-mixer-dev libgl1-mesa-dev libglew-dev libglew-dev
+~~~
