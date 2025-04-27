@@ -12,14 +12,16 @@ find_package(SDL2 REQUIRED)
 include_directories(
     ${SDL2_INCLUDE_DIRS}
     ${OPENGL_INCLUDE_DIR}
-    engine/graphics  # Добавляем директорию с графическими файлами
+    engine/graphics
+    engine/core
 )
 
 # Указываем исходники для движка
 set(ENGINE_SOURCES
     engine/core/Window.cpp
+    engine/core/EntityManager.cpp
+    engine/core/Entity.cpp
     engine/graphics/Renderer.cpp
-    engine/graphics/Shader.cpp
 )
 
 # Указываем исходники для тестовой игры

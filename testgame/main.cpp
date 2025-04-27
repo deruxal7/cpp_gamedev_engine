@@ -1,43 +1,36 @@
-#include <SDL2/SDL.h>
-#include <GL/glew.h>
+#include "Window.h"
 #include "Renderer.h"
+#include "EntityManager.h"
 #include <iostream>
 
+using namespace CacTus::Core;
+using namespace CacTus::Graphics;
+
 int main(int argc, char* argv[]) {
-    // Инициализация SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
-        return -1;
-    }
+    Window window("CacTus Engine - TopDownGame", 800, 600);
+    Renderer renderer(window.getWindow());
 
-    // Создание окна
-    SDL_Window* window = SDL_CreateWindow("CacTusEngine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_OPENGL);
-    if (!window) {
-        std::cerr << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
-        return -1;
-    }
+    EntityManager entityManager;
 
-    // Создание рендерера
-    Renderer renderer(window);
+    Entity player(100.0f, 100.0f, 50.0f, 50.0f);
+    entityManager.addEntity(player);
 
-    // Главный цикл игры
     bool isRunning = true;
-    SDL_Event event;
+
     while (isRunning) {
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                isRunning = false;
-            }
+        window.pollEvents();
+
+        if (!window.isOpen()) {
+            isRunning = false;
+        }
+        renderer.clear();
+
+        for (const auto& entity : entityManager.getEntities()) {
+            renderer.drawRect(entity.getX(), entity.getY(), entity.getWidth(), entity.getHeight());
         }
 
-        renderer.Clear();
-        renderer.Draw();
-        renderer.Present();
+        window.swapBuffers();
     }
-
-    // Завершение работы
-    SDL_DestroyWindow(window);
-    SDL_Quit();
 
     return 0;
 }
