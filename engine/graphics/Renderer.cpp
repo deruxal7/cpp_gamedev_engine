@@ -1,15 +1,20 @@
 #include "Renderer.h"
+#include <GL/glew.h>
 #include <iostream>
 
 namespace CacTus::Graphics {
 
-Renderer::Renderer(SDL_Window* window) {
-    m_window = window;
 
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(0.0f, 800.0f, 600.0f, 0.0f, -1.0f, 1.0f);
-    glMatrixMode(GL_MODELVIEW);
+Renderer::Renderer(SDL_Window* window) 
+    : m_window(window)
+{
+    m_shader = new Shader("shaders/vertex.glsl", "shaders/fragment.glsl");
+}
+
+Renderer::~Renderer() {
+    delete m_shader;
+    glDeleteVertexArrays(1, &m_VAO);
+    glDeleteBuffers(1, &m_VBO);
 }
 
 void Renderer::clear() {
@@ -18,19 +23,37 @@ void Renderer::clear() {
 }
 
 void Renderer::drawRect(float x, float y, float width, float height) {
-    glColor3f(0.0f, 1.0f, 0.0f);
+    m_shader->bind();
 
-    glBegin(GL_QUADS);
-        glVertex2f(x, y);
-        glVertex2f(x + width, y);
-        glVertex2f(x + width, y + height);
-        glVertex2f(x, y + height);
-    glEnd();
+    float vertices[] = {
+        x, y,
+        x+width, y,
+        x+width, y+height,
+        x, y+height
+    };
 
-    glFlush();
+    unsigned int VBO, VAO;
+
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glDrawArrays(GL_QUADS, 0, 4);
+
+    m_shader->unbind();
+
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
 }
 
 void Renderer::present() {
     SDL_GL_SwapWindow(m_window);
 }
+
 }

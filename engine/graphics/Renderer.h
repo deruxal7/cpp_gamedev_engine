@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GL/glew.h>
+#include "Shader.h"
 #include <SDL2/SDL.h>
 
 namespace CacTus::Graphics {
@@ -8,12 +8,17 @@ namespace CacTus::Graphics {
 class Renderer {
 public:
     Renderer(SDL_Window* window);
+    ~Renderer();
 
     void clear();
     void drawRect(float x, float y, float width, float height);
     void present();
 
 private:
+
     SDL_Window* m_window;
+    Shader* m_shader;
+
+    unsigned int m_VAO, m_VBO;
 };
 }

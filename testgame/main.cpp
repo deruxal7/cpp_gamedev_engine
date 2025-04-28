@@ -1,7 +1,9 @@
 #include "Window.h"
 #include "Renderer.h"
 #include "EntityManager.h"
+
 #include <iostream>
+#include <memory>
 
 using namespace CacTus::Core;
 using namespace CacTus::Graphics;
@@ -29,7 +31,7 @@ int main(int argc, char* argv[]) {
             renderer.drawRect(entity.getX(), entity.getY(), entity.getWidth(), entity.getHeight());
         }
 
-        window.swapBuffers();
+        renderer.present();
     }
 
     return 0;

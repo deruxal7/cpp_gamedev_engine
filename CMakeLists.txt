@@ -14,6 +14,7 @@ include_directories(
     ${OPENGL_INCLUDE_DIR}
     engine/graphics
     engine/core
+    engine/graphics/shaders
 )
 
 # Указываем исходники для движка
@@ -22,6 +23,8 @@ set(ENGINE_SOURCES
     engine/core/EntityManager.cpp
     engine/core/Entity.cpp
     engine/graphics/Renderer.cpp
+    engine/graphics/Shader.cpp
+    engine/graphics/shaders
 )
 
 # Указываем исходники для тестовой игры
