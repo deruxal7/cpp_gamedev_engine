@@ -8,7 +8,7 @@ namespace CacTus::Graphics {
 Renderer::Renderer(SDL_Window* window) 
     : m_window(window)
 {
-    m_shader = new Shader("shaders/vertex.glsl", "shaders/fragment.glsl");
+    m_shader = new Shader("engine/graphics/shaders/vertex.glsl", "engine/graphics/shaders/fragment.glsl");
 }
 
 Renderer::~Renderer() {

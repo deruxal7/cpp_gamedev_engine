@@ -27,6 +27,10 @@ set(ENGINE_SOURCES
     engine/graphics/shaders
 )
 
+# Конфигурирует шейдеры
+configure_file(engine/graphics/shaders/vertex.glsl ${CMAKE_BINARY_DIR}/assets/graphics/shaders/vertex.glsl COPYONLY)
+configure_file(engine/graphics/shaders/fragment.glsl ${CMAKE_BINARY_DIR}/engine/graphics/shaders/fragment.glsl COPYONLY)
+
 # Указываем исходники для тестовой игры
 set(TESTGAME_SOURCES
     testgame/main.cpp
