@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
 
     EntityManager entityManager;
 
-    Entity player(100.0f, 100.0f, 50.0f, 50.0f);
+    Entity player(100.0f, 500.0f, 50.0f, 50.0f);
     entityManager.addEntity(player);
 
     bool isRunning = true;
@@ -29,6 +29,7 @@ int main(int argc, char* argv[]) {
 
         for (const auto& entity : entityManager.getEntities()) {
             renderer.drawRect(entity.getX(), entity.getY(), entity.getWidth(), entity.getHeight());
+            //renderer.drawRect();
         }
 
         renderer.present();

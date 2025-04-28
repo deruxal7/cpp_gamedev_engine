@@ -1,14 +1,37 @@
 #include "Renderer.h"
 #include <GL/glew.h>
 #include <iostream>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace CacTus::Graphics {
 
-
-Renderer::Renderer(SDL_Window* window) 
+Renderer::Renderer(SDL_Window* window)
     : m_window(window)
 {
+    SDL_GetWindowSize(m_window, &m_screenWidth, &m_screenHeight);
+
     m_shader = new Shader("engine/graphics/shaders/vertex.glsl", "engine/graphics/shaders/fragment.glsl");
+
+    // Создаем VAO и VBO один раз
+    glGenVertexArrays(1, &m_VAO);
+    glGenBuffers(1, &m_VBO);
+    glBindVertexArray(m_VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+
+    // Настраиваем атрибуты вершин один раз
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // Создаем и передаем матрицу проекции
+    glm::mat4 projection = glm::ortho(0.0f, (float)m_screenWidth, (float)m_screenHeight, 0.0f, -1.0f, 1.0f);
+    m_shader->bind();
+    m_shader->setUniformMatrix4fv("u_Projection", projection);
+    m_shader->setUniform4f("u_Color", 0.0f, 1.0f, 0.3f, 1.0f);
+    m_shader->unbind();
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0); // Отвязываем VBO
+    glBindVertexArray(0); // Отвязываем VAO
 }
 
 Renderer::~Renderer() {
@@ -27,29 +50,22 @@ void Renderer::drawRect(float x, float y, float width, float height) {
 
     float vertices[] = {
         x, y,
-        x+width, y,
-        x+width, y+height,
-        x, y+height
+        x + width, y,
+        x + width, y + height,
+        x, y + height
     };
 
-    unsigned int VBO, VAO;
+    glBindVertexArray(m_VAO); // Привязываем VAO
 
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, m_VBO); // Привязываем VBO
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); // Обновляем данные вершин
 
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4); // Рисуем
 
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    glDrawArrays(GL_QUADS, 0, 4);
+    glBindBuffer(GL_ARRAY_BUFFER, 0); // Отвязываем VBO
+    glBindVertexArray(0); // Отвязываем VAO
 
     m_shader->unbind();
-
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
 }
 
 void Renderer::present() {

@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 
 #include "Shader.h"
+#include <glm/gtc/type_ptr.hpp> // Для glm::value_ptr
 
 namespace CacTus::Graphics {
 
@@ -46,6 +47,11 @@ void Shader::unbind() const {
 void Shader::setUniform4f(const std::string& name, float v0, float v1, float v2, float v3) {
     int location = glGetUniformLocation(m_programID, name.c_str());
     glUniform4f(location, v0, v1, v2, v3);
+}
+
+void Shader::setUniformMatrix4fv(const std::string& name, const glm::mat4& matrix) {
+    int location = glGetUniformLocation(m_programID, name.c_str());
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
 std::string Shader::loadShaderSource(const std::string& filepath) {
