@@ -29,5 +29,5 @@ chmod -x startup_project.sh
 ### Requirements
 ~~~bash
 sudo apt update
-sudo apt install libsdl2-dev libsdl2-mixer-dev libgl1-mesa-dev libglew-dev libglew-dev
+sudo apt install libsdl2-dev libsdl2-mixer-dev libgl1-mesa-dev libglew-dev libglew-dev libsdl2-image-dev
 ~~~
