@@ -1,6 +1,6 @@
-#include "include/Window.h"
-#include "include/Renderer.h"
-#include "include/EntityManager.h"
+#include "Window.h"
+#include "Renderer.h"
+#include "EntityManager.h"
 
 #include <iostream>
 #include <memory>

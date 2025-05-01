@@ -18,11 +18,11 @@ find_package(SDL2_image REQUIRED)
 
 # Включаем директории для библиотек
 include_directories(
+    engine/graphics/include
+    engine/core/include
     ${SDL2_INCLUDE_DIRS}
     ${SDL2IMAGE_INCLUDE_DIRS}
     ${OPENGL_INCLUDE_DIR}
-    engine/graphics/include
-    engine/core/include
 )
 
 # Указываем исходники для движка
