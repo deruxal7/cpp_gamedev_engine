@@ -15,12 +15,6 @@ jobs:
 
       - name: Installing enviroment
         run: sudo apt install libsdl2-dev libsdl2-mixer-dev libgl1-mesa-dev libglew-dev libglew-dev libsdl2-image-dev libglm-dev
-      
-      - name: Start Xvfb
-        run: Xvfb :99 -screen 0 1024x768x24 &
-
-      - name: Set DISPLAY
-        run: export DISPLAY=:99
 
       - name: Configure CMake
         run: cmake -B ${{github.workspace}}/build
