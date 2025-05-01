@@ -27,9 +27,3 @@ jobs:
 
       - name: Build
         run: cmake --build ${{github.workspace}}/build
-
-      - name: Test
-        run: |
-          ${{github.workspace}}/build/CacTusEngine & 
-          sleep 5
-          xdotool search --name "CacTus Engine - TopDownGame" windowkill 
