@@ -1,6 +1,6 @@
-#include "Window.h"
-#include "Renderer.h"
-#include "EntityManager.h"
+#include "include/Window.h"
+#include "include/Renderer.h"
+#include "include/EntityManager.h"
 
 #include <iostream>
 #include <memory>
@@ -29,7 +29,6 @@ int main(int argc, char* argv[]) {
 
         for (const auto& entity : entityManager.getEntities()) {
             renderer.drawRect(entity.getX(), entity.getY(), entity.getWidth(), entity.getHeight());
-            //renderer.drawRect();
         }
 
         renderer.present();

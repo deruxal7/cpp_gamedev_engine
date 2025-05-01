@@ -3,7 +3,7 @@
 #include <iostream>
 #include <GL/glew.h>
 
-#include "Shader.h"
+#include "include/Shader.h"
 #include <glm/gtc/type_ptr.hpp> // Для glm::value_ptr
 
 namespace CacTus::Graphics {

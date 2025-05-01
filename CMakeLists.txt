@@ -1,7 +1,12 @@
+# Required version of cmake
 cmake_minimum_required(VERSION 3.10)
+
+# Project name
 project(CacTusEngine)
 
+# Set C++ standart to C++17
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
@@ -16,9 +21,8 @@ include_directories(
     ${SDL2_INCLUDE_DIRS}
     ${SDL2IMAGE_INCLUDE_DIRS}
     ${OPENGL_INCLUDE_DIR}
-    engine/graphics
-    engine/core
-    engine/graphics/shaders
+    engine/graphics/include
+    engine/core/include
 )
 
 # Указываем исходники для движка
@@ -28,7 +32,6 @@ set(ENGINE_SOURCES
     engine/core/Entity.cpp
     engine/graphics/Renderer.cpp
     engine/graphics/Shader.cpp
-    engine/graphics/shaders
 )
 
 # Конфигурирует шейдеры
