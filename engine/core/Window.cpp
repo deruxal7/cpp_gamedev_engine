@@ -1,4 +1,4 @@
-#include "include/Window.h"
+#include "Window.h"
 #include <iostream>
 
 namespace CacTus::Core {
@@ -59,6 +59,10 @@ bool Window::isOpen() const{
     return m_isOpen;
 }
 
+void Window::setInputCallback(std::function<void(const SDL_Event&)> callback) {
+    m_inputCallback = callback;
+}
+
 void Window::pollEvents() {
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
@@ -66,20 +70,9 @@ void Window::pollEvents() {
             case SDL_QUIT:
                 m_isOpen = false;
                 break;
-            case SDL_KEYDOWN:
-                std::cout << "Key pressed: " << event.key.keysym.sym << std::endl;
-                break;
-            case SDL_KEYUP:
-                std::cout << "Key released: " << event.key.keysym.sym << std::endl;
-                break;
-            case SDL_MOUSEBUTTONDOWN:
-                std::cout << "Mousebutton pressed: " << event.button.button << std:: endl;
-                break;
-            case SDL_MOUSEBUTTONUP:
-                std::cout << "Mousebutton released: " << event.button.button << std::endl;
-                break;
-            default:
-                break;
+        }
+        if(m_inputCallback) {
+            m_inputCallback(event);
         }
     }
 }
