@@ -30,4 +30,5 @@ private:
     std::function<void(const SDL_Event&)> m_inputCallback;
 };
 
+
 }
