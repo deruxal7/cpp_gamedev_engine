@@ -32,6 +32,7 @@ set(ENGINE_SOURCES
     engine/core/Entity.cpp
     engine/core/InputActions.cpp
     engine/core/InputManager.cpp
+    engine/core/Application.cpp
     engine/graphics/Renderer.cpp
     engine/graphics/Shader.cpp
 )
