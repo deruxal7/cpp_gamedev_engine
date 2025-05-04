@@ -18,4 +18,8 @@ const std::vector<Entity>& EntityManager::getEntities() const{
     return m_entities;
 }
 
+Entity& EntityManager::getEntity(size_t index) {
+    return m_entities[index];
+}
+
 }

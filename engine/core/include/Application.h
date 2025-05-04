@@ -9,6 +9,7 @@
 #include "Renderer.h"
 #include "EntityManager.h"
 #include "InputManager.h"
+#include "Entity.h"
 
 namespace CacTus::Core {
 
@@ -19,6 +20,7 @@ public:
     ~Application();
 
     void run();
+    Entity& getPlayer();
 
 private:
     std::unique_ptr<Window> m_window;

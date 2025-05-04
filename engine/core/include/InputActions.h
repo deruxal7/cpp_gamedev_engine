@@ -2,45 +2,56 @@
 
 namespace CacTus::Core {
 
+class Entity;
+
 class InputActions {
 
 public: 
     virtual ~InputActions() = default;
 
-    virtual void execute() = 0;
+    virtual void execute(Entity& entity) = 0;
 
 };
 
 class MoveLeftAction : public InputActions {
 
 public:
-    MoveLeftAction() = default;
-    void execute() override;
+    MoveLeftAction(float speed);
+    void execute(Entity& entity) override;
 
+private:
+    float m_speed;
 };
 
 class MoveRightAction : public InputActions {
 
 public: 
-    MoveRightAction() = default;
-    void execute() override;
+    MoveRightAction(float speed);
+    void execute(Entity& entity) override;
+
+private:
+    float m_speed;
 
 };
 
 class MoveUpAction : public InputActions {
 
 public:
-    MoveUpAction() = default;
-    void execute() override;
+    MoveUpAction(float speed);
+    void execute(Entity& entity) override;
 
+private:
+    float m_speed;
 };
 
 class MoveDownAction : public InputActions {
 
 public:
-    MoveDownAction() = default;
-    void execute() override;
+    MoveDownAction(float speed);
+    void execute(Entity& entity) override;
 
+private:
+    float m_speed;
 };
 
 }

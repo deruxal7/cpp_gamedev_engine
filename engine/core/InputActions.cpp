@@ -1,22 +1,32 @@
-#include <InputActions.h>
+#include "InputActions.h"
+#include "Entity.h"
+
 #include <iostream>
 
 namespace CacTus::Core {
 
-void MoveLeftAction::execute() {
+MoveLeftAction::MoveLeftAction(float speed) : m_speed(speed) {}
+void MoveLeftAction::execute(Entity& entity) {
     std::cout << "Move left action!" << std::endl;
+    entity.setSpeedX(-m_speed);
 }
 
-void MoveRightAction::execute() {
+MoveRightAction::MoveRightAction(float speed) : m_speed(speed) {}
+void MoveRightAction::execute(Entity& entity) {
     std::cout << "Move right action!" << std::endl;
+    entity.setSpeedX(m_speed);
 }
 
-void MoveUpAction::execute() {
+MoveUpAction::MoveUpAction(float speed) : m_speed(speed) {}
+void MoveUpAction::execute(Entity& entity) {
     std::cout << "Move up action!" << std::endl;
+    entity.setSpeedY(-m_speed);
 }
 
-void MoveDownAction::execute() {
+MoveDownAction::MoveDownAction(float speed) : m_speed(speed) {}
+void MoveDownAction::execute(Entity& entity) {
     std::cout << "Move down action!" << std::endl;
+    entity.setSpeedY(m_speed);
 }
 
 }
