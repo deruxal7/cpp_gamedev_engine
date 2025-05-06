@@ -2,8 +2,9 @@
 
 namespace CacTus::Core {
 
-Entity::Entity(float x, float y, float width, float height)
-    : m_x(x), m_y(y), m_width(width), m_height(height) {}
+Entity::Entity(float x, float y, float width, float height, float max_speed)
+    : m_x(x), m_y(y), m_width(width), m_height(height), m_max_speed(max_speed), m_velocity(0.0f, 0.0f) {
+}
 
 float Entity::getX() const{
     return m_x;
@@ -21,12 +22,8 @@ float Entity::getHeight() const{
     return m_height;
 }
 
-float Entity::getSpeedX() const{
-    return m_speedX;
-}
-
-float Entity::getSpeedY() const{
-    return m_speedY;
+float Entity::getMaxSpeed() const{
+    return m_max_speed;
 }
 
 void Entity::setX(float x) {
@@ -37,12 +34,16 @@ void Entity::setY(float y) {
     m_y = y;
 }
 
-void Entity::setSpeedX(float speedX) {
-    m_speedX = speedX;
+void Entity::setMaxSpeed(float speed) {
+    m_max_speed = speed;
 }
 
-void Entity::setSpeedY(float speedY) {
-    m_speedY = speedY;
+glm::vec2 Entity::getVelocity() const {
+    return m_velocity;
+}
+
+void Entity::setVelocity(glm::vec2 velocity) {
+    m_velocity = velocity;
 }
 
 }

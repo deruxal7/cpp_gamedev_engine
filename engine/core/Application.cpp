@@ -1,6 +1,10 @@
 #include <iostream>
+#include <glm/glm.hpp>
+#include <cmath>
+#include <memory>
 
 #include "Application.h"
+#include "Window.h"
 
 namespace CacTus::Core {
 
@@ -10,22 +14,11 @@ Application::Application()
 {
     m_inputManager = std::make_unique<InputManager>();
 
-    float speed = 7.0f;
-    m_moveDownAction = std::make_unique<MoveDownAction>(speed);
-    m_moveUpAction = std::make_unique<MoveUpAction>(speed);
-    m_moveLeftAction = std::make_unique<MoveLeftAction>(speed);
-    m_moveRightAction = std::make_unique<MoveRightAction>(speed);
-
-    m_inputManager->bindKey(SDLK_a, m_moveLeftAction.get());
-    m_inputManager->bindKey(SDLK_d, m_moveRightAction.get());
-    m_inputManager->bindKey(SDLK_w, m_moveUpAction.get());
-    m_inputManager->bindKey(SDLK_s, m_moveDownAction.get());
-
     m_window->setInputCallback([this](const SDL_Event& event) {
         m_inputManager->processInput(event);
     });
 
-    Entity player(100.0f, 500.0f, 50.0f, 50.0f);
+    Entity player(100.0f, 500.0f, 50.0f, 50.0f, 8.0f);
     m_entityManager.addEntity(player);
 }
 
@@ -37,28 +30,31 @@ void Application::run() {
         m_window->pollEvents();
 
         Entity& player = getPlayer();
-        float speedX = 0.0f;
-        float speedY = 0.0f;
-        float speed = 5.0f;
-        
+        player.setVelocity(glm::vec2(0.0f, 0.0f));
+
+        glm::vec2 velocity(0.0f, 0.0f);
+        float speed = player.getMaxSpeed();
+
         if (getInputManager().keyStates[SDLK_a]) {
-            speedX -= speed;
+            velocity.x -= speed;
         }
         if (getInputManager().keyStates[SDLK_d]) {
-            speedX += speed;
+            velocity.x += speed;
         }
         if (getInputManager().keyStates[SDLK_w]) {
-            speedY -= speed;
+            velocity.y -= speed;
         }
         if (getInputManager().keyStates[SDLK_s]) {
-            speedY += speed;
+            velocity.y += speed;
         }
 
-        player.setSpeedX(speedX);
-        player.setSpeedY(speedY);
+        if (velocity.x != 0.0f || velocity.y != 0.0f) {
+            velocity = glm::normalize(velocity) * speed;
+        }
+        
 
-        player.setX(player.getX() + player.getSpeedX());
-        player.setY(player.getY() + player.getSpeedY());
+        player.setX(player.getX() + velocity.x); 
+        player.setY(player.getY() + velocity.y);
 
         m_renderer.clear();
 

@@ -6,10 +6,6 @@ InputManager::InputManager() {
     // Define relations
 }
 
-void InputManager::bindKey(SDL_Keycode key, InputActions* action) {
-    m_keyBinds[key] = action;
-}
-
 void InputManager::processInput(const SDL_Event& event) {
     if (event.type == SDL_KEYDOWN) {
         keyStates[event.key.keysym.sym] = true;
