@@ -21,6 +21,7 @@ public:
 
     void run();
     Entity& getPlayer();
+    InputManager& getInputManager();
 
 private:
     std::unique_ptr<Window> m_window;
@@ -31,8 +32,6 @@ private:
     std::unique_ptr<MoveUpAction> m_moveUpAction;
     std::unique_ptr<MoveLeftAction> m_moveLeftAction;
     std::unique_ptr<MoveRightAction> m_moveRightAction;
-
-    void processInput(const SDL_Event& event);
 };
 
 }

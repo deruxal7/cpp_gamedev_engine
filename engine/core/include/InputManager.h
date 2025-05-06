@@ -14,7 +14,8 @@ public:
     ~InputManager() = default;
 
     void bindKey(SDL_Keycode key, InputActions* action);
-    void processInput(const SDL_Event& event, Entity& entity);
+    void processInput(const SDL_Event& event);
+    std::map<SDL_Keycode, bool> keyStates;
 
 private:
     std::map<SDL_Keycode, InputActions*> m_keyBinds;
