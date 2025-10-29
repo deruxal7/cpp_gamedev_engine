@@ -1,13 +1,14 @@
 #include "Window.h"
 #include <iostream>
+#include <stdexcept>
 
 namespace CacTus::Core {
 
 Window::Window(const std::string& title, int width, int height) {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        std::cerr << "[Error] SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
+        std::string msg = std::string("[Error] SDL could not initialize! SDL_Error: ") + SDL_GetError();
         m_isOpen = false;
-        exit(-1);
+        throw std::runtime_error(msg);
     }
 
     std::cout << "[Info] SDL initialized successfully!" << std::endl;
@@ -26,23 +27,22 @@ Window::Window(const std::string& title, int width, int height) {
     );
 
     if (!m_window) {
-        std::cerr << "[Error] Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
+        std::string msg = std::string("[Error] Window could not be created! SDL_Error: ") + SDL_GetError();
         m_isOpen = false;
-        exit(-1);
+        throw std::runtime_error(msg);
     }
     std::cout << "[Info] Window created successfully!" << std::endl;
 
     m_glContext = SDL_GL_CreateContext(m_window);
     if(!m_glContext) {
-        std::cerr << "[Error] OpenGL conext could not be created! SDL_Error: " << SDL_GetError() << std::endl;
+        std::string msg = std::string("[Error] OpenGL context could not be created! SDL_Error: ") + SDL_GetError();
         m_isOpen = false;
-        exit(-1);
+        throw std::runtime_error(msg);
     }
     std::cout << "[Info] OpenGL context created successfully!" << std::endl;
-
+    glewExperimental = GL_TRUE;
     if(glewInit() != GLEW_OK) {
-        std::cerr << "[Error] GLEW could not be initialize!" << std::endl;
-        exit(-1);
+        throw std::runtime_error("[Error] GLEW could not be initialized!");
     }
     std::cout << "[Info] GLEW initialized successfully!" << std::endl;
 

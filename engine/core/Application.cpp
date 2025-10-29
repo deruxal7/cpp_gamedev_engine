@@ -2,6 +2,7 @@
 #include <glm/glm.hpp>
 #include <cmath>
 #include <memory>
+#include <chrono>
 
 #include "Application.h"
 #include "Window.h"
@@ -9,7 +10,7 @@
 namespace CacTus::Core {
 
 Application::Application() 
-    : m_window(std::make_unique<Window>("CacTus Engine - Rouguevival", 800, 600)),
+    : m_window(std::make_unique<Window>("CacTus Engine - Rouguevival", 1024, 800)),
       m_renderer(m_window->getWindow())
 {
     m_inputManager = std::make_unique<InputManager>();
@@ -18,7 +19,7 @@ Application::Application()
         m_inputManager->processInput(event);
     });
 
-    Entity player(100.0f, 500.0f, 50.0f, 50.0f, 8.0f);
+    Entity player(100.0f, 500.0f, 50.0f, 50.0f, 1.0f);
     m_entityManager.addEntity(player);
 }
 
@@ -26,7 +27,11 @@ Application::~Application() {
 }
 
 void Application::run() {
+    auto lastTime = std::chrono::high_resolution_clock::now();
     while (m_window->isOpen()) {
+        auto currentTime = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<float> deltaTime = currentTime - lastTime;
+        lastTime = currentTime;
         m_window->pollEvents();
 
         Entity& player = getPlayer();
@@ -36,16 +41,16 @@ void Application::run() {
         float speed = player.getMaxSpeed();
 
         if (getInputManager().keyStates[SDLK_a]) {
-            velocity.x -= speed;
+            velocity.x -= speed * deltaTime.count();
         }
         if (getInputManager().keyStates[SDLK_d]) {
-            velocity.x += speed;
+            velocity.x += speed * deltaTime.count();
         }
         if (getInputManager().keyStates[SDLK_w]) {
-            velocity.y -= speed;
+            velocity.y -= speed * deltaTime.count();
         }
         if (getInputManager().keyStates[SDLK_s]) {
-            velocity.y += speed;
+            velocity.y += speed * deltaTime.count();
         }
 
         if (velocity.x != 0.0f || velocity.y != 0.0f) {

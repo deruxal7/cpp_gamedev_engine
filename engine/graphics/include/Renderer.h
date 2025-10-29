@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Shader.h"
+#include <memory>
 #include <SDL2/SDL.h>
 
 namespace CacTus::Graphics {
@@ -16,7 +17,7 @@ public:
 
 private:
     SDL_Window* m_window;
-    Shader* m_shader;
+    std::unique_ptr<Shader> m_shader;
 
     unsigned int m_VAO, m_VBO;
     int m_screenWidth, m_screenHeight; // Добавляем ширину и высоту экрана

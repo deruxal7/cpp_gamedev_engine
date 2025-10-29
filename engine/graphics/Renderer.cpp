@@ -3,6 +3,7 @@
 #include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <memory>
 
 namespace CacTus::Graphics {
 
@@ -11,7 +12,7 @@ Renderer::Renderer(SDL_Window* window)
 {
     SDL_GetWindowSize(m_window, &m_screenWidth, &m_screenHeight);
 
-    m_shader = new Shader("engine/graphics/shaders/vertex.glsl", "engine/graphics/shaders/fragment.glsl");
+    m_shader = std::make_unique<Shader>("engine/graphics/shaders/vertex.glsl", "engine/graphics/shaders/fragment.glsl");
 
     // Создаем VAO и VBO один раз
     glGenVertexArrays(1, &m_VAO);
@@ -35,7 +36,7 @@ Renderer::Renderer(SDL_Window* window)
 }
 
 Renderer::~Renderer() {
-    delete m_shader;
+    m_shader.reset();
     glDeleteVertexArrays(1, &m_VAO);
     glDeleteBuffers(1, &m_VBO);
 }
@@ -58,7 +59,7 @@ void Renderer::drawRect(float x, float y, float width, float height) {
     glBindVertexArray(m_VAO); // Привязываем VAO
 
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO); // Привязываем VBO
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); // Обновляем данные вершин
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW); // Обновляем данные вершин (динамически)
 
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4); // Рисуем
 
