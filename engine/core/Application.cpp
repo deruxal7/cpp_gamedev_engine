@@ -19,7 +19,7 @@ Application::Application()
         m_inputManager->processInput(event);
     });
 
-    Entity player(100.0f, 500.0f, 50.0f, 50.0f, 1.0f);
+    Entity player(100.0f, 500.0f, 50.0f, 50.0f, 500.0f);
     m_entityManager.addEntity(player);
 }
 
@@ -27,39 +27,48 @@ Application::~Application() {
 }
 
 void Application::run() {
+    static int frames = 0;
+    static float fpsTimer = 0.0f;
     auto lastTime = std::chrono::high_resolution_clock::now();
     while (m_window->isOpen()) {
         auto currentTime = std::chrono::high_resolution_clock::now();
         std::chrono::duration<float> deltaTime = currentTime - lastTime;
+        float dt = std::min(deltaTime.count(), 0.1f);
+        frames++; fpsTimer += dt;
+        if (fpsTimer >= 1.0f) {
+            std::cout << "[Info] FPS: " << frames / fpsTimer << std::endl;
+            frames = 0;
+            fpsTimer = 0.0f;
+        }
         lastTime = currentTime;
         m_window->pollEvents();
 
         Entity& player = getPlayer();
         player.setVelocity(glm::vec2(0.0f, 0.0f));
 
-        glm::vec2 velocity(0.0f, 0.0f);
+        glm::vec2 direction(0.0f, 0.0f);
         float speed = player.getMaxSpeed();
 
         if (getInputManager().keyStates[SDLK_a]) {
-            velocity.x -= speed * deltaTime.count();
+            direction.x -= 1;
         }
         if (getInputManager().keyStates[SDLK_d]) {
-            velocity.x += speed * deltaTime.count();
+            direction.x += 1;
         }
         if (getInputManager().keyStates[SDLK_w]) {
-            velocity.y -= speed * deltaTime.count();
+            direction.y -= 1;
         }
         if (getInputManager().keyStates[SDLK_s]) {
-            velocity.y += speed * deltaTime.count();
+            direction.y += 1;
         }
 
-        if (velocity.x != 0.0f || velocity.y != 0.0f) {
-            velocity = glm::normalize(velocity) * speed;
+        if (direction.x != 0.0f || direction.y != 0.0f) {
+            direction = glm::normalize(direction) * speed * dt;
         }
         
 
-        player.setX(player.getX() + velocity.x); 
-        player.setY(player.getY() + velocity.y);
+        player.setX(player.getX() + direction.x); 
+        player.setY(player.getY() + direction.y);
 
         m_renderer.clear();
 

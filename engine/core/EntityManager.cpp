@@ -1,4 +1,6 @@
 #include "EntityManager.h"
+#include <stdexcept>
+#include <string>
 
 namespace CacTus::Core {
 
@@ -19,6 +21,9 @@ const std::vector<Entity>& EntityManager::getEntities() const{
 }
 
 Entity& EntityManager::getEntity(size_t index) {
+    if (index >= m_entities.size()) {
+        throw std::out_of_range(std::string("EntityManager::getEntity: index out of range: ") + std::to_string(index));
+    }
     return m_entities[index];
 }
 
