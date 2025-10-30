@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Installing enviroment
-        run: sudo apt install libsdl2-dev libsdl2-mixer-dev libgl1-mesa-dev libglew-dev libglew-dev libsdl2-image-dev libglm-dev
+        run: sudo apt update && sudo apt install libsdl2-dev libsdl2-dev libgl1-mesa-dev libglew-dev libsdl2-image-dev libglm-dev
 
       - name: Configure CMake
         run: cmake -B ${{github.workspace}}/build
